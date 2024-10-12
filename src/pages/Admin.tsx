@@ -1,28 +1,115 @@
-import React, { useState, useEffect } from 'react';
-import { Article } from '../types';
+import React, { useState, useEffect } from "react";
+import { Article } from "../types";
+import articlesData from "../db/articles.json"; // Renommé pour éviter les conflits avec l'état
 
 const Admin: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [articles, setArticles] = useState<Article[]>([]);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
 
   useEffect(() => {
-    // Simuler le chargement des articles depuis une API
     const fetchArticles = async () => {
-      // Remplacer par un vrai appel API dans une application réelle
-      const mockArticles: Article[] = [
-        { id: 1, title: "Les merveilles cachées de la Provence", excerpt: "Découvrez les villages perchés et les champs de lavande...", imageUrl: "https://source.unsplash.com/800x600/?provence" },
-        { id: 2, title: "Bretagne : Entre terre et mer", excerpt: "Explorez les côtes sauvages et les forêts mystérieuses...", imageUrl: "https://source.unsplash.com/800x600/?brittany" },
-        { id: 3, title: "Les trésors cachés des Alpes françaises", excerpt: "Des sommets enneigés aux lacs cristallins...", imageUrl: "https://source.unsplash.com/800x600/?french,alps" },
-      ];
-      setArticles(mockArticles);
+      setArticles(articlesData);
     };
 
     fetchArticles();
   }, []);
+  return (
+    <div className="admin-panel">
+      {!isAuthenticated ? (
+        <div className="admin-login">
+          <h2>Admin Login</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (password === "admin") {
+                setIsAuthenticated(true);
+              } else {
+                alert("Mot de passe incorrect");
+              }
+            }}
+          >
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit">Se connecter</button>
+          </form>
+        </div>
+      ) : (
+        <div className="articles-list">
+          <h2>Articles</h2>
+          {articles.map((article) => (
+            <div key={article.id} className="article-item">
+              <h3>{article.title}</h3>
+              <p>{article.excerpt}</p>
+              <button onClick={() => setEditingArticle(article)}>
+                Modifier
+              </button>
+              <button
+                onClick={async () => {
+                  const response = await fetch(`/api/articles/${article.id}`, {
+                    method: "DELETE",
+                  });
 
-  // ... rest of the component remains the same
+                  if (response.ok) {
+                    setArticles(articles.filter((a) => a.id !== article.id));
+                  } else {
+                    alert("Erreur lors de la suppression de l'article");
+                  }
+                }}
+              >
+                Supprimer
+              </button>
+            </div>
+          ))}
+          {editingArticle && (
+            <div className="edit-form">
+              <h2>Modifier l'article</h2>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setArticles(
+                    articles.map((a) =>
+                      a.id === editingArticle.id ? editingArticle : a
+                    )
+                  );
+                  setEditingArticle(null);
+                }}
+              >
+                <input
+                  type="text"
+                  value={editingArticle.title}
+                  onChange={(e) =>
+                    setEditingArticle({
+                      ...editingArticle,
+                      title: e.target.value,
+                    })
+                  }
+                />
+                <textarea
+                  value={editingArticle.excerpt}
+                  onChange={(e) =>
+                    setEditingArticle({
+                      ...editingArticle,
+                      excerpt: e.target.value,
+                    })
+                  }
+                />
+                <button type="submit">Enregistrer</button>
+                <button type="button" onClick={() => setEditingArticle(null)}>
+                  Annuler
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Admin;
