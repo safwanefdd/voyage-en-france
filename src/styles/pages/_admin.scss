@@ -1,0 +1,75 @@
+.admin-login,
+.admin-panel {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: $spacing-unit * 3;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: $primary-color;
+    margin-bottom: $spacing-unit * 3;
+  }
+}
+
+.admin-login {
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      margin-bottom: $spacing-unit * 2;
+      padding: $spacing-unit;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    button {
+      @include button;
+    }
+  }
+}
+
+.admin-panel {
+  .articles-list {
+    .article-item {
+      border-bottom: 1px solid #eee;
+      padding: $spacing-unit * 2 0;
+
+      h3 {
+        margin-bottom: $spacing-unit;
+      }
+
+      p {
+        margin-bottom: $spacing-unit;
+        color: #666;
+      }
+
+      button {
+        @include button($secondary-color);
+        margin-right: $spacing-unit;
+      }
+    }
+  }
+
+  .edit-form {
+    input,
+    textarea {
+      width: 100%;
+      margin-bottom: $spacing-unit * 2;
+      padding: $spacing-unit;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    button {
+      @include button;
+      margin-right: $spacing-unit;
+    }
+  }
+}

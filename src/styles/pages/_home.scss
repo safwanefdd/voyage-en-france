@@ -1,0 +1,21 @@
+.home {
+  h1 {
+    text-align: center;
+    margin-bottom: $spacing-unit * 4;
+    color: $primary-color;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-unit * 3;
+
+    @include responsive(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include responsive(lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

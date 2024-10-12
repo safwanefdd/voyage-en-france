@@ -1,0 +1,24 @@
+.article-details {
+  max-width: 800px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 2rem;
+    color: $primary-color;
+    margin-bottom: $spacing-unit * 2;
+  }
+
+  .article-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: $spacing-unit * 3;
+  }
+
+  .article-content {
+    p {
+      margin-bottom: $spacing-unit * 2;
+    }
+  }
+}

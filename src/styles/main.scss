@@ -1,0 +1,12 @@
+@import 'variables';
+@import 'mixins';
+@import 'base';
+@import 'layout';
+@import 'components/header';
+@import 'components/footer';
+@import 'components/article-card';
+@import 'pages/home';
+@import 'pages/article-details';
+@import 'pages/admin';
+
+// Ajoutez d'autres imports si nécessaire
